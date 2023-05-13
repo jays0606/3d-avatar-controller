@@ -17,8 +17,13 @@ const AvatarJoyStick = ({ onChange }: AvatarJoyStickProps) => {
   };
 
   return (
-    <div className="joystick-container absolute bottom-5 right-5 z-10">
-      <Joystick move={handleMove} stop={handleStop} />
+    <div className="joystick-container absolute bottom-10 right-10 z-10">
+      <Joystick
+        move={handleMove}
+        stop={handleStop}
+        baseColor={"#4E94AB"}
+        stickColor={"#F2A03D"}
+      />
     </div>
   );
 };
