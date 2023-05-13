@@ -4,7 +4,7 @@ import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 interface AvatarProps {
-  targetDirection: THREE.Vector3 | null;
+  targetDirection: React.RefObject<THREE.Vector3 | null>;
 }
 
 const Avatar = ({ targetDirection }: AvatarProps) => {
@@ -13,7 +13,7 @@ const Avatar = ({ targetDirection }: AvatarProps) => {
 
   const modelUrl = "https://models.readyplayer.me/640594355167081fc2ed91be.glb";
   const translateSpeed = 0.03;
-  const rotateSpeed = 0.1
+  const rotateSpeed = 0.1;
 
   useEffect(() => {
     avatarController.current.loadModel(modelUrl).then(() => {
@@ -26,13 +26,13 @@ const Avatar = ({ targetDirection }: AvatarProps) => {
       .getScene()
       .getObjectByName("Armature");
 
-    if (avatar && targetDirection) {
-      avatar.position.x += targetDirection.x * translateSpeed;
-      avatar.position.z += targetDirection.y * translateSpeed;
+    if (avatar && targetDirection.current) {
+      avatar.position.x += targetDirection.current.x * translateSpeed;
+      avatar.position.z += targetDirection.current.y * translateSpeed;
 
       const targetQuaternion = new THREE.Quaternion().setFromAxisAngle(
         new THREE.Vector3(0, 1, 0),
-        Math.atan2(targetDirection.x, targetDirection.y)
+        Math.atan2(targetDirection.current.x, targetDirection.current.y)
       );
       avatar.quaternion.rotateTowards(targetQuaternion, rotateSpeed);
     }

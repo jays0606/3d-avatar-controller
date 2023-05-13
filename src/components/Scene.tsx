@@ -9,13 +9,13 @@ import Helpers from "./Canvas/Helpers";
 import AvatarJoyStick from "./AvatarJoystick";
 
 const Scene = () => {
-  const [targetDirection, setTargetDirection] = useState<THREE.Vector3 | null>(
-    null
-  );
+  const targetDirection = useRef<THREE.Vector3 | null>(null);
 
   return (
     <div className="w-screen h-screen">
-      <AvatarJoyStick onChange={setTargetDirection}></AvatarJoyStick>
+      <AvatarJoyStick
+        onChange={(direction) => (targetDirection.current = direction)}
+      ></AvatarJoyStick>
       <Canvas camera={{ fov: 35, position: [0, 1, 10] }}>
         <Avatar targetDirection={targetDirection}></Avatar>
         <Lights />
