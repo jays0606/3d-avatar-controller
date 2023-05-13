@@ -7,7 +7,7 @@ const CameraController = () => {
   const controlsRef = useRef<OrbitControlsImpl>(null);
 
   useEffect(() => {
-    controlsRef.current?.target.set(0.5, 0, 0);
+    controlsRef.current?.target.set(0, 1.0, 0);
   }, []);
 
   return <OrbitControls ref={controlsRef} />;
