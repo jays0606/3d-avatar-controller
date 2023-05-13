@@ -21,8 +21,8 @@ const AvatarJoyStick = ({ onChange }: AvatarJoyStickProps) => {
       <Joystick
         move={handleMove}
         stop={handleStop}
-        baseColor={"#4E94AB"}
-        stickColor={"#F2A03D"}
+        baseColor={"#212121"}
+        stickColor={"#FFFFFF"}
       />
     </div>
   );
