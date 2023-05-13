@@ -16,7 +16,7 @@ const Scene = () => {
       <AvatarJoyStick
         onChange={(direction) => (targetDirection.current = direction)}
       ></AvatarJoyStick>
-      <Canvas camera={{ fov: 35, position: [0, 1, 10] }}>
+      <Canvas camera={{ fov: 35, position: [0, 2, 20] }}>
         <color attach="background" args={['#1A1A1A']} />
         <Avatar targetDirection={targetDirection}></Avatar>
         <Lights />

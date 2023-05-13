@@ -1,7 +1,12 @@
 {
   "name": "3d-avatar-controller",
+  "description": "Basic 3d gltf avatar controller playground using three.js, react-three-fiber",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "Jaeho Shin",
+    "email": "jaehoshin62@gmail.com"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
