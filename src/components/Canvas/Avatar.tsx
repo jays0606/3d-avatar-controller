@@ -2,20 +2,21 @@ import AvatarController from "@/class/AvatarController";
 import { useState, useRef, useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-
+import {
+  modelUrl,
+  happyIdleUrl,
+  walkAnimationUrl,
+  translateSpeed,
+  rotateSpeed,
+} from "../../constants/avatar";
 interface AvatarProps {
   targetDirection: React.RefObject<THREE.Vector3 | null>;
 }
 
 const Avatar = ({ targetDirection }: AvatarProps) => {
+  const { camera } = useThree();
   const [scene, setScene] = useState<THREE.Scene>();
   const avatarController = useRef(new AvatarController());
-
-  const modelUrl = "https://models.readyplayer.me/640594355167081fc2ed91be.glb";
-  const happyIdleUrl = "../assets/animation/HappyIdle.fbx";
-  const walkAnimationUrl = "../assets/animation/Walking.fbx";
-  const translateSpeed = 0.03;
-  const rotateSpeed = 0.05;
 
   useEffect(() => {
     const loadModel = async () => {
@@ -33,12 +34,26 @@ const Avatar = ({ targetDirection }: AvatarProps) => {
     if (!avatar || !targetDirection.current) {
       avatarController.current.playAnimation("happyIdle");
     } else {
-      avatar.position.x += targetDirection.current.x * translateSpeed;
-      avatar.position.z += targetDirection.current.y * translateSpeed;
+      // Calculate the camera's forward and right directions
+      const cameraForward = camera
+        .getWorldDirection(new THREE.Vector3())
+        .normalize()
+        .setY(0);
+      const cameraRight = new THREE.Vector3().crossVectors(
+        cameraForward,
+        new THREE.Vector3(0, 1, 0)
+      );
+
+      // Calculate the updatedDirection based on targetDirection and the camera's orientation
+      const updatedDirection = new THREE.Vector3()
+        .addScaledVector(cameraForward, -targetDirection.current.y)
+        .addScaledVector(cameraRight, targetDirection.current.x)
+        .normalize();
+      avatar.position.add(updatedDirection.multiplyScalar(translateSpeed));
 
       const targetQuaternion = new THREE.Quaternion().setFromAxisAngle(
         new THREE.Vector3(0, 1, 0),
-        Math.atan2(targetDirection.current.x, targetDirection.current.y)
+        Math.atan2(updatedDirection.x, updatedDirection.z)
       );
       avatar.quaternion.slerp(targetQuaternion, rotateSpeed);
       avatarController.current.playAnimation("walk");
